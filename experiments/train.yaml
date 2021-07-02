@@ -1,0 +1,48 @@
+DEVICE: cuda
+MODE: hm
+BATCH_SIZE: 16
+NUM_WORKERS: 2
+NUM_EPOCHS: 200
+PRINT_FREQ: 100
+
+DATASET:
+  TRAIN: robot_keypoints_train
+  TEST: robot_keypoints_val
+  NUM_KEYPOINTS: 6
+  NUM_LIMBS: 5
+  MAX_NUM_DETECTIONS: 10
+  SIGMA: 2.0
+  FLIP: 0.5
+  TRANSLATE: 0.4
+  SCALE:
+  - 0.5
+  - 1.5
+  ROTATION: 40
+  INPUT_SIZE:
+  - 384
+  - 384
+  OUTPUT_SIZE:
+  - 192
+  - 192
+
+MODEL:
+  NUM_SCALES: 2
+  FINAL_KERNEL: 3
+  BACKBONE: resnet18
+
+LOSS:
+  USE_WEIGHT: true
+
+TRAIN:
+  OPTIMIZER: adamw
+  LR: 1e-4
+
+TEST:
+  KEEP_RATIO: true
+  PROJECT: true
+  NMS_KERNEL: 3
+  DETECTION_THRESHOLD: 0.1
+  LIMB:
+    NUM_MIDPOINTS: 20
+    THRESHOLD: 0.05
+    IGNORE_FEW_PARTS: false
