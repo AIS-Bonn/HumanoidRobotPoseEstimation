@@ -2,7 +2,7 @@
 This is the implementation of Real-time Pose Estimation from Images for Multiple Humanoid Robots, RoboCup Symposium 2021. 
 
 ## Dataset
-The HumanoidRobotPose dataset is provided in this repository and also can be downloaded from [here](https://drive.google.com/drive/folders/1bNpAN-yoCYCqXQPB5nNfsKVdWPkx-dm7).
+The HumanoidRobotPose dataset is provided in this repository also can be downloaded from [here](https://drive.google.com/drive/folders/1bNpAN-yoCYCqXQPB5nNfsKVdWPkx-dm7).
 The dataset format is the same as [the COCO dataset](https://cocodataset.org/#format-data).
 
 To use the dataset, install pycocotools:
