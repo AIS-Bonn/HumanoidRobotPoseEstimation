@@ -18,7 +18,7 @@ from engine import train, evaluate
 def get_args_parser():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('--config', type=str, required=True)
-    parser.add_argument('--output_dir', type=str, required=True)
+    parser.add_argument('--output_dir', type=str)
     parser.add_argument('--dataset_path', type=str, required=True)
     parser.add_argument('--eval', action='store_true')
     parser.add_argument('--checkpoint', type=str)
@@ -35,8 +35,6 @@ def main(args):
         random.seed(seed)
         np.random.seed(seed)
         torch.manual_seed(seed)
-
-    writer = SummaryWriter(args.output_dir)
 
     device = torch.device(cfg.DEVICE)
 
@@ -94,7 +92,9 @@ def main(args):
     if cfg.TRAIN.LR_FACTOR > 0:
         lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, cfg.TRAIN.LR_STEPS, cfg.TRAIN.LR_FACTOR)
 
-    min_loss = float('inf')
+    writer = SummaryWriter(args.output_dir)
+
+    max_ap = 0.0
 
     for epoch in range(cfg.NUM_EPOCHS):
         start_time = time.time() 
@@ -111,8 +111,8 @@ def main(args):
         writer.add_scalar('ap/val', ap_val, epoch + 1)
 
         # save checkpoint
-        if loss_val < min_loss:
-            min_loss = loss_val
+        if ap_val > max_ap:
+            max_ap = ap_val
             torch.save(model.state_dict(), os.path.join(args.output_dir, 'checkpoint.pth'))
 
         if lr_scheduler is not None:
